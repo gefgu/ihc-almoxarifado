@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1B1B1B">
+    <title>Almoxarifado UTFPR</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="portal">
+        <div class="pattern" aria-hidden="true"></div>
+        <header class="portal-header">
+            <div class="brand" aria-label="UTFPR">UTF<span>PR</span></div>
+            <p>Universidade Tecnológica Federal do Paraná</p>
+        </header>
+
+        <section class="welcome" aria-labelledby="portal-title">
+            <p class="eyebrow">Controle patrimonial</p>
+            <h1 id="portal-title">Acesse o almoxarifado</h1>
+            <p class="intro">Escolha seu perfil para entrar no ambiente correspondente.</p>
+
+            <div class="profile-grid">
+                <a class="profile-card student" href="aluno/">
+                    <span class="profile-icon"><i data-lucide="graduation-cap" aria-hidden="true"></i></span>
+                    <span>
+                        <small>Área acadêmica</small>
+                        <strong>Área do Aluno</strong>
+                        <span>Consulte equipamentos e acompanhe seus empréstimos.</span>
+                    </span>
+                    <i data-lucide="arrow-right" class="arrow" aria-hidden="true"></i>
+                </a>
+
+                <a class="profile-card technician" href="tecnico/">
+                    <span class="profile-icon"><i data-lucide="wrench" aria-hidden="true"></i></span>
+                    <span>
+                        <small>Área administrativa</small>
+                        <strong>Painel do Técnico</strong>
+                        <span>Gerencie solicitações, devoluções e manutenção.</span>
+                    </span>
+                    <i data-lucide="arrow-right" class="arrow" aria-hidden="true"></i>
+                </a>
+            </div>
+        </section>
+
+        <footer>Campus Curitiba · Protótipo acadêmico</footer>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

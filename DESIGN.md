@@ -173,3 +173,65 @@ Use uma escala baseada em 4 px:
 4. Use roxo para agrupamento e identidade, não para competir com a ação principal.
 5. Verifique 320, 375 e 430 px antes de considerar a página pronta.
 6. Teste foco por teclado, contraste, redução de movimento, drawer e conteúdo coberto pela navegação.
+
+## 9. Dashboard administrativo
+
+O painel técnico adapta a identidade UTFPR para uma interface desktop de alta densidade. A estrutura pode ser mais clara e tabular que a experiência do aluno, mas deve preservar carvão nas superfícies principais, amarelo para seleção e ações primárias e roxo para apoio visual.
+
+### Estrutura
+
+- O cabeçalho ocupa toda a largura e reúne marca, busca global, notificações e perfil.
+- A sidebar possui largura padrão entre 220 e 250 px e pode ser recolhida para aproximadamente 76 px.
+- O conteúdo usa uma grade fluida, com largura mínima zero em todas as colunas para evitar estouro.
+- Indicadores aparecem antes dos painéis operacionais e devem caber em uma única linha apenas quando houver espaço suficiente.
+- Em telas largas, o conteúdo principal pode usar uma proporção aproximada de 60/40 entre operação prioritária e informações auxiliares.
+
+### Superfícies administrativas
+
+- Fundo da aplicação: carvão médio entre `#1B1B1B` e `#292929`.
+- Painéis: carvão profundo, borda branca com 12% de opacidade e raio de 16 px.
+- Cabeçalhos de painel devem ser compactos e separar título, contexto e ação secundária.
+- Sombras devem ajudar na separação dos blocos sem criar aparência flutuante excessiva.
+- Interfaces administrativas claras são permitidas em futuras variações, desde que mantenham contraste AA e reservem amarelo e roxo para identidade e hierarquia.
+
+### Sidebar
+
+- Item ativo usa amarelo com texto quase preto.
+- Itens inativos usam texto secundário e recebem uma superfície clara translúcida no hover.
+- Contadores devem ser curtos, arredondados e usar a cor semântica associada.
+- No desktop, o controle de recolhimento permanece no rodapé da sidebar.
+- Abaixo de 900 px, a sidebar vira drawer com backdrop, botão de fechamento e suporte à tecla `Escape`.
+
+### Métricas
+
+- Cada card contém ícone, rótulo, valor e tendência opcional.
+- O valor deve ter maior peso visual; a cor semântica não pode substituir o texto.
+- Cards de métricas mantêm altura e padding consistentes mesmo quando os rótulos variam.
+- Use azul para informação, verde para sucesso, laranja ou vermelho para atenção, roxo para apoio e amarelo para manutenção ou identidade.
+
+### Tabelas e seleção
+
+- Cabeçalhos usam caixa alta ou peso elevado, tamanho reduzido e texto secundário.
+- Linhas possuem altura confortável, bordas discretas e hover visível.
+- A linha selecionada deve combinar fundo translúcido, marcador lateral e controle de seleção.
+- Status devem aparecer em badges textuais, nunca apenas por cor.
+- Tabelas podem rolar horizontalmente dentro do painel; a página inteira não deve gerar rolagem horizontal.
+- Linhas selecionáveis precisam funcionar com clique, `Enter` e barra de espaço.
+
+### Painel de detalhes e decisões
+
+- A solicitação selecionada deve exibir aluno, histórico, item, disponibilidade, datas e justificativa.
+- A ação principal usa amarelo; recusa e contato permanecem secundários.
+- Recusas exigem motivo antes da atualização de estado.
+- Após uma decisão, os controles associados ficam desabilitados e métricas, badges e atividades são atualizados visualmente.
+- Mudanças locais devem ser anunciadas por uma região `aria-live` ou toast com `role="status"`.
+
+## 10. Breakpoints administrativos
+
+- **Até 430 px:** métricas em uma coluna, detalhes empilhados e busca compacta.
+- **431–720 px:** métricas em duas colunas e painéis em uma coluna.
+- **721–900 px:** sidebar em drawer e tabelas com rolagem interna.
+- **901–1240 px:** sidebar fixa, conteúdo principal em uma coluna e painéis auxiliares em até duas colunas.
+- **Acima de 1240 px:** dashboard completo em duas colunas e métricas em uma linha.
+
+Em todas as larguras, validar foco visível, fechamento do drawer, legibilidade das tabelas, ausência de conteúdo coberto e suporte a `prefers-reduced-motion`.

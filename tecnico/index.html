@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1B1B1B">
+    <title>Painel do Técnico - Almoxarifado UTFPR</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard-shell" id="dashboard">
+        <header class="topbar">
+            <div class="topbar-brand">
+                <button class="icon-button mobile-menu" id="openSidebar" type="button" aria-label="Abrir menu" aria-controls="sidebar" aria-expanded="false">
+                    <i data-lucide="menu" aria-hidden="true"></i>
+                </button>
+                <a class="brand" href="../" aria-label="Voltar ao portal">
+                    <span class="brand-mark"><i data-lucide="package-open" aria-hidden="true"></i></span>
+                    <span><strong>Almoxarifado</strong><small>Painel do Técnico</small></span>
+                </a>
+            </div>
+
+            <div class="global-search">
+                <i data-lucide="search" aria-hidden="true"></i>
+                <label class="sr-only" for="globalSearch">Pesquisar no painel</label>
+                <input id="globalSearch" type="search" autocomplete="off" placeholder="Pesquisar aluno, RA, item, código ou patrimônio...">
+                <kbd>Ctrl K</kbd>
+            </div>
+
+            <div class="topbar-actions">
+                <button class="icon-button notification-button" type="button" aria-label="Notificações">
+                    <i data-lucide="bell" aria-hidden="true"></i><span>3</span>
+                </button>
+                <button class="profile-button" type="button" aria-label="Menu do técnico">
+                    <span class="avatar"><i data-lucide="user" aria-hidden="true"></i></span>
+                    <span class="profile-copy"><strong>Técnico</strong><small><i></i> Online</small></span>
+                    <i data-lucide="chevron-down" class="chevron" aria-hidden="true"></i>
+                </button>
+            </div>
+        </header>
+
+        <aside class="sidebar" id="sidebar" aria-label="Navegação do técnico" aria-hidden="false">
+            <div class="sidebar-mobile-head">
+                <strong>Menu</strong>
+                <button class="icon-button" id="closeSidebar" type="button" aria-label="Fechar menu"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <nav>
+                <button class="side-link active" type="button" data-section="Dashboard"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></button>
+                <button class="side-link" type="button" data-section="Solicitações"><i data-lucide="file-clock"></i><span>Solicitações</span><b id="sidebarPending">4</b></button>
+                <button class="side-link" type="button" data-section="Empréstimos ativos"><i data-lucide="package-check"></i><span>Empréstimos ativos</span><b>23</b></button>
+                <button class="side-link" type="button" data-section="Devolvidos"><i data-lucide="package-open"></i><span>Devolvidos</span></button>
+                <button class="side-link" type="button" data-section="Atrasos"><i data-lucide="clock-alert"></i><span>Atrasos</span><b class="danger">5</b></button>
+                <button class="side-link" type="button" data-section="Manutenção"><i data-lucide="wrench"></i><span>Manutenção</span><b class="warning">4</b></button>
+                <button class="side-link" type="button" data-section="Produtos"><i data-lucide="boxes"></i><span>Produtos</span></button>
+                <button class="side-link" type="button" data-section="Relatórios"><i data-lucide="chart-no-axes-combined"></i><span>Relatórios</span></button>
+                <button class="side-link" type="button" data-section="Usuários"><i data-lucide="users"></i><span>Usuários</span></button>
+                <button class="side-link" type="button" data-section="Configurações"><i data-lucide="settings"></i><span>Configurações</span></button>
+            </nav>
+            <button class="collapse-button" id="collapseSidebar" type="button"><i data-lucide="panel-left-close"></i><span>Recolher menu</span></button>
+        </aside>
+        <button class="sidebar-backdrop" id="sidebarBackdrop" type="button" aria-label="Fechar menu"></button>
+
+        <main class="main-content">
+            <div class="page-heading">
+                <div>
+                    <p class="eyebrow">Controle patrimonial</p>
+                    <h1 id="pageTitle">Dashboard</h1>
+                </div>
+                <p>Visão geral do almoxarifado · <strong>16 de maio de 2025</strong></p>
+            </div>
+
+            <section class="metrics" aria-label="Indicadores">
+                <article class="metric-card blue">
+                    <span class="metric-icon"><i data-lucide="file-clock"></i></span>
+                    <div><small>Solicitações pendentes</small><strong id="pendingMetric">4</strong><p><b>↑ 2</b> desde ontem</p></div>
+                </article>
+                <article class="metric-card green">
+                    <span class="metric-icon"><i data-lucide="calendar-check"></i></span>
+                    <div><small>Empréstimos ativos</small><strong id="activeLoansMetric">23</strong><p>Sem alteração</p></div>
+                </article>
+                <article class="metric-card orange">
+                    <span class="metric-icon"><i data-lucide="clock-alert"></i></span>
+                    <div><small>Em atraso</small><strong>5</strong><p><b>↑ 1</b> desde ontem</p></div>
+                </article>
+                <article class="metric-card purple">
+                    <span class="metric-icon"><i data-lucide="circle-check-big"></i></span>
+                    <div><small>Devolvidos hoje</small><strong>7</strong><p><b>↑ 3</b> desde ontem</p></div>
+                </article>
+                <article class="metric-card yellow">
+                    <span class="metric-icon"><i data-lucide="wrench"></i></span>
+                    <div><small>Em manutenção</small><strong>4</strong><p>Sem alteração</p></div>
+                </article>
+            </section>
+
+            <div class="dashboard-grid">
+                <div class="primary-column">
+                    <section class="panel requests-panel">
+                        <header class="panel-header">
+                            <div><h2>Solicitações pendentes <span id="pendingBadge">4</span></h2><p>Selecione uma solicitação para analisar</p></div>
+                            <button class="text-button" type="button">Ver todas</button>
+                        </header>
+                        <div class="table-wrap">
+                            <table>
+                                <thead><tr><th></th><th>Aluno</th><th>RA</th><th>Item</th><th>Qtd.</th><th>Data</th><th>Status</th><th>Ações</th></tr></thead>
+                                <tbody id="requestTable">
+                                    <tr class="request-row selected" tabindex="0" data-request-id="1" data-searchable="João Martins 20231234 Osciloscópio Digital PAT-25012">
+                                        <td><span class="radio-dot"></span></td><td>João Martins</td><td>20231234</td><td>Osciloscópio Digital</td><td>1</td><td>16/05/2025</td><td><span class="badge pending">Pendente</span></td><td><button class="row-action" type="button" aria-label="Selecionar João Martins"><i data-lucide="chevron-right"></i></button></td>
+                                    </tr>
+                                    <tr class="request-row" tabindex="0" data-request-id="2" data-searchable="Maria Souza 20224567 Multímetro Digital PAT-18045">
+                                        <td><span class="radio-dot"></span></td><td>Maria Souza</td><td>20224567</td><td>Multímetro Digital</td><td>1</td><td>16/05/2025</td><td><span class="badge pending">Pendente</span></td><td><button class="row-action" type="button" aria-label="Selecionar Maria Souza"><i data-lucide="chevron-right"></i></button></td>
+                                    </tr>
+                                    <tr class="request-row" tabindex="0" data-request-id="3" data-searchable="Pedro Lima 20239876 Fonte DC Regulável PAT-22410">
+                                        <td><span class="radio-dot"></span></td><td>Pedro Lima</td><td>20239876</td><td>Fonte DC Regulável</td><td>1</td><td>16/05/2025</td><td><span class="badge pending">Pendente</span></td><td><button class="row-action" type="button" aria-label="Selecionar Pedro Lima"><i data-lucide="chevron-right"></i></button></td>
+                                    </tr>
+                                    <tr class="request-row" tabindex="0" data-request-id="4" data-searchable="Ana Pereira 20231011 Gerador de Função PAT-19008">
+                                        <td><span class="radio-dot"></span></td><td>Ana Pereira</td><td>20231011</td><td>Gerador de Função</td><td>1</td><td>15/05/2025</td><td><span class="badge pending">Pendente</span></td><td><button class="row-action" type="button" aria-label="Selecionar Ana Pereira"><i data-lucide="chevron-right"></i></button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-empty" id="requestEmpty" hidden>Nenhuma solicitação encontrada.</div>
+                    </section>
+
+                    <section class="panel detail-panel" id="requestDetails" aria-live="polite">
+                        <header class="panel-header"><div><h2>Detalhes da solicitação selecionada</h2><p id="detailStatus">Aguardando análise</p></div></header>
+                        <div class="detail-grid">
+                            <div class="student-summary">
+                                <span class="large-avatar"><i data-lucide="user"></i></span>
+                                <div><h3 id="detailName">João Martins</h3><p id="detailRa">RA: 20231234</p><p id="detailCourse">Engenharia Elétrica</p><p id="detailEmail">joao.martins@aluno.utfpr.br</p></div>
+                                <div class="history-box"><strong><i data-lucide="history"></i> Histórico</strong><span>Empréstimos realizados: <b id="detailLoans">3</b></span><span>Em atraso: <b>0</b></span></div>
+                            </div>
+                            <div class="item-summary">
+                                <div class="item-heading"><span class="item-visual"><i id="detailIcon" data-lucide="monitor-speaker"></i></span><div><small>Item solicitado</small><h3 id="detailItem">Osciloscópio Digital</h3><p id="detailCode">PAT-25012</p></div></div>
+                                <div class="detail-stats"><span>Quantidade solicitada <b>1</b></span><span>Quantidade disponível <b id="detailAvailable">14 unidades</b></span><span>Data da solicitação <b id="detailDate">16/05/2025 09:24</b></span><span>Data de vencimento <b>28/05/2025</b></span></div>
+                                <div class="reason"><small>Motivo da solicitação</small><p id="detailReason">Necessário para realização de ensaios e captura de sinais no projeto de laboratório.</p></div>
+                            </div>
+                            <div class="decision-panel">
+                                <button class="decision approve" id="approveRequest" type="button"><i data-lucide="circle-check"></i> Aprovar</button>
+                                <button class="decision reject" id="rejectRequest" type="button"><i data-lucide="circle-x"></i> Recusar</button>
+                                <button class="decision secondary" type="button"><i data-lucide="mail"></i> Enviar e-mail</button>
+                                <label for="rejectionReason">Motivo da recusa</label>
+                                <textarea id="rejectionReason" maxlength="200" placeholder="Informe o motivo da recusa..."></textarea>
+                                <small><span id="reasonCount">0</span>/200 caracteres</small>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="secondary-column">
+                    <section class="panel compact-panel">
+                        <header class="panel-header"><div><h2>Itens em atraso <span class="alert-count">5</span></h2></div><button class="text-button" type="button">Ver todos</button></header>
+                        <div class="table-wrap">
+                            <table class="compact-table">
+                                <thead><tr><th>Aluno</th><th>Item</th><th>Atraso</th><th>Urgência</th></tr></thead>
+                                <tbody>
+                                    <tr data-searchable="Pedro Almeida Multímetro Digital"><td>Pedro Almeida</td><td>Multímetro Digital</td><td class="danger-text">7 dias</td><td><span class="badge high">Alta</span></td></tr>
+                                    <tr data-searchable="Beatriz Costa Osciloscópio Digital"><td>Beatriz Costa</td><td>Osciloscópio Digital</td><td class="danger-text">5 dias</td><td><span class="badge high">Alta</span></td></tr>
+                                    <tr data-searchable="Lucas Ferreira Fonte DC Regulável"><td>Lucas Ferreira</td><td>Fonte DC Regulável</td><td>3 dias</td><td><span class="badge medium">Média</span></td></tr>
+                                    <tr data-searchable="Mariana Rocha Gerador de Função"><td>Mariana Rocha</td><td>Gerador de Função</td><td>2 dias</td><td><span class="badge medium">Média</span></td></tr>
+                                    <tr data-searchable="Gabriel Santos Kit Arduino"><td>Gabriel Santos</td><td>Kit Arduino</td><td>1 dia</td><td><span class="badge low">Baixa</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section class="panel compact-panel">
+                        <header class="panel-header"><div><h2>Manutenção / Defeitos <span>4</span></h2></div><button class="text-button" type="button">Ver todos</button></header>
+                        <div class="table-wrap">
+                            <table class="compact-table">
+                                <thead><tr><th>Item</th><th>Problema</th><th>Retorno</th><th>Status</th></tr></thead>
+                                <tbody>
+                                    <tr data-searchable="Fonte DC Regulável Fusível queimado"><td>Fonte DC Regulável</td><td>Fusível queimado</td><td>22/05</td><td><span class="badge maintenance">Em manutenção</span></td></tr>
+                                    <tr data-searchable="Osciloscópio Digital Calibração periódica"><td>Osciloscópio Digital</td><td>Calibração periódica</td><td>23/05</td><td><span class="badge maintenance">Em manutenção</span></td></tr>
+                                    <tr data-searchable="Multímetro Digital Display com falha"><td>Multímetro Digital</td><td>Display com falha</td><td>21/05</td><td><span class="badge waiting">Aguardando peça</span></td></tr>
+                                    <tr data-searchable="Gerador de Função Instabilidade na saída"><td>Gerador de Função</td><td>Instabilidade na saída</td><td>20/05</td><td><span class="badge maintenance">Em manutenção</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section class="panel activity-panel">
+                        <header class="panel-header"><div><h2>Atividades recentes</h2></div><button class="text-button" type="button">Ver todas</button></header>
+                        <ul id="activityList">
+                            <li><span class="activity-icon success"><i data-lucide="check"></i></span><p>Empréstimo aprovado para Maria Souza · Multímetro Digital</p><time>10:15</time></li>
+                            <li><span class="activity-icon info"><i data-lucide="arrow-right"></i></span><p>Devolução registrada · Gerador de Função</p><time>09:48</time></li>
+                            <li><span class="activity-icon alert"><i data-lucide="clock"></i></span><p>Item em atraso · Pedro Almeida · Multímetro Digital</p><time>09:30</time></li>
+                            <li><span class="activity-icon purple"><i data-lucide="wrench"></i></span><p>Manutenção iniciada · Fonte DC Regulável</p><time>08:55</time></li>
+                        </ul>
+                    </section>
+                </div>
+            </div>
+        </main>
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
