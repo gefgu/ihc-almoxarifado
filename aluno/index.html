@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1B1B1B">
+    <title>Almoxarifado UTFPR - Controle Patrimonial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-shell" id="app">
+        <div class="academic-pattern" aria-hidden="true"></div>
+
+        <header class="top-header" id="inicio">
+            <div class="flex items-center justify-between gap-3">
+                <button class="icon-button" id="openMenu" type="button" aria-label="Abrir menu" aria-controls="sideMenu" aria-expanded="false">
+                    <i data-lucide="menu" class="w-5 h-5" aria-hidden="true"></i>
+                </button>
+
+                <div class="flex min-w-0 flex-1 items-center justify-center">
+                    <img
+                        class="brand-logo"
+                        id="brandLogo"
+                        src="assets/logo-utfpr.svg"
+                        alt="Universidade Tecnológica Federal do Paraná"
+                    >
+                    <div class="brand-fallback" id="brandFallback" aria-label="UTFPR">
+                        UTF<span>PR</span>
+                    </div>
+                </div>
+
+                <button class="icon-button" type="button" aria-label="Ver notificações">
+                    <i data-lucide="bell" class="w-5 h-5" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="mt-5 text-center">
+                <p class="m-0 text-[0.65rem] font-extrabold uppercase tracking-[0.24em] text-[#FFC800]">Controle patrimonial</p>
+                <h1 class="mb-0 mt-1 text-xl font-black">Almoxarifado</h1>
+                <p class="mb-0 mt-1 text-xs font-medium text-[#B9B9B3]">Campus Curitiba</p>
+            </div>
+        </header>
+
+        <aside class="drawer" id="sideMenu" aria-label="Menu principal" aria-hidden="true">
+            <div class="drawer-profile">
+                <div class="flex items-start justify-between gap-4">
+                    <div>
+                        <p class="m-0 text-sm font-black uppercase">João Martins</p>
+                        <p class="mb-0 mt-1 text-xs font-bold">RA: 20231234</p>
+                    </div>
+                    <button class="icon-button !border-black/20 !bg-black/10 !text-black" id="closeMenu" type="button" aria-label="Fechar menu">
+                        <i data-lucide="x" class="w-5 h-5" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="mt-5 rounded-xl border border-black/25 px-3 py-3 text-sm font-bold">
+                    Engenharia de Computação
+                </div>
+            </div>
+            <nav class="overflow-y-auto pb-6">
+                <div class="drawer-section-title"><i data-lucide="bookmark" class="w-4 h-4" aria-hidden="true"></i> Almoxarifado</div>
+                <button class="drawer-link is-active" type="button" data-drawer-target="inicio"><i data-lucide="home" class="w-5 h-5" aria-hidden="true"></i> Início</button>
+                <button class="drawer-link" type="button" data-drawer-target="equipamentos"><i data-lucide="search" class="w-5 h-5" aria-hidden="true"></i> Equipamentos</button>
+                <button class="drawer-link" type="button" data-drawer-target="emprestimos"><i data-lucide="clipboard-list" class="w-5 h-5" aria-hidden="true"></i> Meus empréstimos</button>
+                <div class="drawer-section-title"><i data-lucide="graduation-cap" class="w-4 h-4" aria-hidden="true"></i> Área do aluno</div>
+                <button class="drawer-link" type="button"><i data-lucide="clock-3" class="w-5 h-5" aria-hidden="true"></i> Horários</button>
+                <button class="drawer-link" type="button"><i data-lucide="book-open" class="w-5 h-5" aria-hidden="true"></i> Boletim</button>
+                <button class="drawer-link" type="button"><i data-lucide="newspaper" class="w-5 h-5" aria-hidden="true"></i> Notícias</button>
+            </nav>
+        </aside>
+        <button class="drawer-backdrop" id="menuBackdrop" type="button" aria-label="Fechar menu"></button>
+
+        <section class="student-card" id="perfil" aria-label="Identificação do aluno">
+            <div class="student-avatar"><i data-lucide="graduation-cap" class="w-6 h-6" aria-hidden="true"></i></div>
+            <div class="min-w-0 flex-1">
+                <p class="m-0 truncate text-sm font-black">João Martins</p>
+                <p class="mb-0 mt-1 text-xs font-bold opacity-75">RA 20231234 · Eng. de Computação</p>
+            </div>
+            <i data-lucide="chevron-right" class="w-5 h-5 shrink-0" aria-hidden="true"></i>
+        </section>
+
+        <main class="content" id="mainContent">
+            <section id="equipamentos" aria-labelledby="equipmentTitle">
+                <div class="search-field">
+                    <i data-lucide="search" class="search-icon h-5 w-5" aria-hidden="true"></i>
+                    <label class="sr-only" for="equipmentSearch">Pesquisar equipamentos</label>
+                    <input id="equipmentSearch" type="search" autocomplete="off" placeholder="Equipamento, código ou categoria">
+                    <i data-lucide="scan-barcode" class="scan-icon h-5 w-5" aria-hidden="true"></i>
+                </div>
+
+                <div class="no-scrollbar flex gap-2 overflow-x-auto pb-1" role="group" aria-label="Filtrar equipamentos">
+                    <button class="filter-chip" type="button" data-filter="all" aria-pressed="true">
+                        <i data-lucide="layout-grid" class="h-4 w-4" aria-hidden="true"></i> Todos
+                    </button>
+                    <button class="filter-chip" type="button" data-filter="available" aria-pressed="false">
+                        <i data-lucide="circle-check" class="h-4 w-4" aria-hidden="true"></i> Disponíveis
+                    </button>
+                    <button class="filter-chip" type="button" data-filter="electronics" aria-pressed="false">
+                        <i data-lucide="cpu" class="h-4 w-4" aria-hidden="true"></i> Eletrônica
+                    </button>
+                    <button class="filter-chip" type="button" data-filter="computing" aria-pressed="false">
+                        <i data-lucide="laptop" class="h-4 w-4" aria-hidden="true"></i> Informática
+                    </button>
+                </div>
+
+                <div class="section-heading">
+                    <h2 id="equipmentTitle">Equipamentos</h2>
+                    <span class="text-xs font-bold text-[#B9B9B3]" id="resultCount" aria-live="polite">3 itens</span>
+                </div>
+
+                <div class="equipment-list" id="equipmentList">
+                    <article class="equipment-card" data-search-item data-name="Osciloscópio Digital" data-code="PAT-25012" data-category="electronics" data-available="true">
+                        <div class="equipment-visual">
+                            <i data-lucide="monitor-speaker" class="h-8 w-8" aria-hidden="true"></i>
+                            <span>Osciloscópio</span>
+                        </div>
+                        <div class="min-w-0">
+                            <span class="eyebrow">Eletrônica</span>
+                            <h3>Osciloscópio Digital</h3>
+                            <p class="equipment-code">PAT-25012 · 16 unidades</p>
+                            <div class="equipment-meta">
+                                <span class="availability"><i data-lucide="circle-check" class="h-4 w-4" aria-hidden="true"></i> 14 disponíveis</span>
+                                <button class="primary-button" type="button"><i data-lucide="file-plus-2" class="h-4 w-4" aria-hidden="true"></i> Emprestar</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="equipment-card" data-search-item data-name="Multímetro Digital" data-code="PAT-18045" data-category="electronics" data-available="true">
+                        <div class="equipment-visual">
+                            <i data-lucide="gauge" class="h-8 w-8" aria-hidden="true"></i>
+                            <span>Multímetro</span>
+                        </div>
+                        <div class="min-w-0">
+                            <span class="eyebrow">Eletrônica</span>
+                            <h3>Multímetro Digital</h3>
+                            <p class="equipment-code">PAT-18045 · 24 unidades</p>
+                            <div class="equipment-meta">
+                                <span class="availability"><i data-lucide="circle-check" class="h-4 w-4" aria-hidden="true"></i> 8 disponíveis</span>
+                                <button class="primary-button" type="button"><i data-lucide="file-plus-2" class="h-4 w-4" aria-hidden="true"></i> Emprestar</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="equipment-card" data-search-item data-name="Notebook Dell Latitude" data-code="PAT-31022" data-category="computing" data-available="false">
+                        <div class="equipment-visual">
+                            <i data-lucide="laptop" class="h-8 w-8" aria-hidden="true"></i>
+                            <span>Notebook</span>
+                        </div>
+                        <div class="min-w-0">
+                            <span class="eyebrow">Informática</span>
+                            <h3>Notebook Dell Latitude</h3>
+                            <p class="equipment-code">PAT-31022 · 12 unidades</p>
+                            <div class="equipment-meta">
+                                <span class="availability !text-[#B9B9B3]"><i data-lucide="clock-3" class="h-4 w-4" aria-hidden="true"></i> Lista de espera</span>
+                                <button class="primary-button" type="button">Detalhes</button>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="empty-state" id="emptyState" hidden>
+                    <i data-lucide="search-x" class="mx-auto h-8 w-8 text-[#FFC800]" aria-hidden="true"></i>
+                    <p class="mb-0 mt-3 text-sm font-extrabold text-white">Nenhum equipamento encontrado</p>
+                    <p class="mb-0 mt-1 text-xs">Tente outro termo ou remova o filtro selecionado.</p>
+                </div>
+            </section>
+
+            <section id="emprestimos" aria-labelledby="loanTitle">
+                <div class="section-heading">
+                    <h2 id="loanTitle">Meus empréstimos</h2>
+                    <button class="section-link" type="button">Ver todos</button>
+                </div>
+
+                <div class="loan-list">
+                    <article class="loan-row" data-loan-item>
+                        <div class="loan-item">
+                            <div class="loan-icon"><i data-lucide="gauge" class="h-5 w-5" aria-hidden="true"></i></div>
+                            <div class="min-w-0">
+                                <p class="loan-title m-0">Multímetro Digital</p>
+                                <p class="loan-date mb-0">PAT-18045 · devolução 28/05</p>
+                            </div>
+                        </div>
+                        <span class="status-badge">Em uso</span>
+                    </article>
+                    <article class="loan-row" data-loan-item>
+                        <div class="loan-item">
+                            <div class="loan-icon"><i data-lucide="laptop" class="h-5 w-5" aria-hidden="true"></i></div>
+                            <div class="min-w-0">
+                                <p class="loan-title m-0">Notebook Dell</p>
+                                <p class="loan-date mb-0">PAT-31022 · devolução 26/05</p>
+                            </div>
+                        </div>
+                        <span class="status-badge">Em uso</span>
+                    </article>
+                </div>
+
+                <button class="new-loan" type="button">
+                    <span class="new-loan-icon"><i data-lucide="plus" class="h-6 w-6" aria-hidden="true"></i></span>
+                    <span>
+                        <strong class="block text-sm">Novo empréstimo</strong>
+                        <small class="mt-1 block text-xs text-[#B9B9B3]">Reserve um equipamento</small>
+                    </span>
+                </button>
+            </section>
+        </main>
+
+        <nav class="bottom-nav" aria-label="Navegação inferior">
+            <button class="nav-item" type="button" data-nav-target="inicio" aria-current="page">
+                <i data-lucide="home" class="h-5 w-5" aria-hidden="true"></i><span>Início</span>
+            </button>
+            <button class="nav-item" type="button" data-nav-target="equipamentos">
+                <i data-lucide="search" class="h-5 w-5" aria-hidden="true"></i><span>Pesquisar</span>
+            </button>
+            <button class="nav-item" type="button" data-nav-target="emprestimos">
+                <i data-lucide="clipboard-list" class="h-5 w-5" aria-hidden="true"></i><span>Empréstimos</span>
+            </button>
+            <button class="nav-item" type="button" data-nav-target="perfil">
+                <i data-lucide="user-round" class="h-5 w-5" aria-hidden="true"></i><span>Perfil</span>
+            </button>
+        </nav>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
