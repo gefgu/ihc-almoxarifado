@@ -31,7 +31,7 @@
                     </div>
                 </div>
 
-                <button class="icon-button" type="button" aria-label="Ver notificações">
+                <button class="icon-button" id="notificationButton" type="button" aria-label="Ver notificações">
                     <i data-lucide="bell" class="w-5 h-5" aria-hidden="true"></i>
                 </button>
             </div>
@@ -81,6 +81,18 @@
 
         <main class="content" id="mainContent">
             <section id="equipamentos" aria-labelledby="equipmentTitle">
+                <div class="quick-help" aria-label="Ajuda rápida">
+                    <div>
+                        <strong>Como reservar</strong>
+                        <p>Escolha um equipamento, confira o patrimônio e confirme a reserva. A retirada é combinada no almoxarifado.</p>
+                    </div>
+                    <button class="section-link" id="helpButton" type="button">Ajuda</button>
+                </div>
+
+                <div class="status-message" id="statusMessage" role="status" aria-live="polite">
+                    2 equipamentos disponíveis para reserva.
+                </div>
+
                 <div class="search-field">
                     <i data-lucide="search" class="search-icon h-5 w-5" aria-hidden="true"></i>
                     <label class="sr-only" for="equipmentSearch">Pesquisar equipamentos</label>
@@ -108,7 +120,14 @@
                 <div class="equipment-list" id="equipmentList">
                     <article class="equipment-card" data-search-item data-name="Osciloscópio Digital" data-code="PAT-25012" data-category="electronics" data-available="true">
                         <div class="equipment-visual">
-                            <i data-lucide="monitor-speaker" class="h-8 w-8" aria-hidden="true"></i>
+                            <svg class="equipment-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+                                <rect x="10" y="12" width="44" height="34" rx="5"></rect>
+                                <path d="M17 35c4-12 8-12 12 0s8 12 12 0 5-8 6-8"></path>
+                                <path d="M18 52h28"></path>
+                                <path d="M25 46v6M39 46v6"></path>
+                                <circle cx="48" cy="18" r="2"></circle>
+                                <circle cx="48" cy="26" r="2"></circle>
+                            </svg>
                             <span>Osciloscópio</span>
                         </div>
                         <div class="min-w-0">
@@ -117,14 +136,23 @@
                             <p class="equipment-code">PAT-25012 · 16 unidades</p>
                             <div class="equipment-meta">
                                 <span class="availability"><i data-lucide="circle-check" class="h-4 w-4" aria-hidden="true"></i> 14 disponíveis</span>
-                                <button class="primary-button" type="button"><i data-lucide="file-plus-2" class="h-4 w-4" aria-hidden="true"></i> Emprestar</button>
+                                <button class="primary-button" type="button" data-reserve-button><i data-lucide="file-plus-2" class="h-4 w-4" aria-hidden="true"></i> Reservar</button>
                             </div>
                         </div>
                     </article>
 
                     <article class="equipment-card" data-search-item data-name="Multímetro Digital" data-code="PAT-18045" data-category="electronics" data-available="true">
                         <div class="equipment-visual">
-                            <i data-lucide="gauge" class="h-8 w-8" aria-hidden="true"></i>
+                            <svg class="equipment-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+                                <rect x="18" y="7" width="28" height="46" rx="6"></rect>
+                                <rect x="23" y="13" width="18" height="10" rx="2"></rect>
+                                <path d="M25 36a7 7 0 0 1 14 0"></path>
+                                <path d="M32 36l5-7"></path>
+                                <circle cx="26" cy="44" r="2"></circle>
+                                <circle cx="38" cy="44" r="2"></circle>
+                                <path d="M26 46c-8 5-12 2-12-5 0-5 3-8 7-10"></path>
+                                <path d="M38 46c8 5 12 2 12-5 0-5-3-8-7-10"></path>
+                            </svg>
                             <span>Multímetro</span>
                         </div>
                         <div class="min-w-0">
@@ -133,7 +161,7 @@
                             <p class="equipment-code">PAT-18045 · 24 unidades</p>
                             <div class="equipment-meta">
                                 <span class="availability"><i data-lucide="circle-check" class="h-4 w-4" aria-hidden="true"></i> 8 disponíveis</span>
-                                <button class="primary-button" type="button"><i data-lucide="file-plus-2" class="h-4 w-4" aria-hidden="true"></i> Emprestar</button>
+                                <button class="primary-button" type="button" data-reserve-button><i data-lucide="file-plus-2" class="h-4 w-4" aria-hidden="true"></i> Reservar</button>
                             </div>
                         </div>
                     </article>
@@ -166,7 +194,7 @@
                     </article>
                 </div>
 
-                <button class="new-loan" type="button">
+                <button class="new-loan" id="newLoanButton" type="button">
                     <span class="new-loan-icon"><i data-lucide="plus" class="h-6 w-6" aria-hidden="true"></i></span>
                     <span>
                         <strong class="block text-sm">Novo empréstimo</strong>
@@ -175,6 +203,29 @@
                 </button>
             </section>
         </main>
+
+        <section class="reservation-panel" id="reservationPanel" role="dialog" aria-modal="true" aria-labelledby="reservationTitle" aria-hidden="true" hidden>
+            <div class="reservation-card">
+                <button class="icon-button close-panel" id="cancelReservation" type="button" aria-label="Cancelar reserva">
+                    <i data-lucide="x" class="w-5 h-5" aria-hidden="true"></i>
+                </button>
+                <span class="eyebrow">Confirmar reserva</span>
+                <h2 id="reservationTitle">Revise os dados antes de enviar</h2>
+                <dl class="reservation-summary">
+                    <div><dt>Equipamento</dt><dd id="reservationName">-</dd></div>
+                    <div><dt>Patrimônio</dt><dd id="reservationCode">-</dd></div>
+                    <div><dt>Disponibilidade</dt><dd id="reservationAvailability">-</dd></div>
+                    <div><dt>Prazo previsto</dt><dd>Retirada hoje · devolução em até 7 dias</dd></div>
+                </dl>
+                <p class="reservation-note">Depois de confirmar, a solicitação fica pendente até a análise do técnico.</p>
+                <div class="reservation-actions">
+                    <button class="secondary-button" id="closeReservation" type="button">Cancelar</button>
+                    <button class="primary-button" id="confirmReservation" type="button"><i data-lucide="circle-check" class="h-4 w-4" aria-hidden="true"></i> Confirmar reserva</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
         <nav class="bottom-nav" aria-label="Navegação inferior">
             <button class="nav-item" type="button" data-nav-target="inicio" aria-current="page">

@@ -22,9 +22,25 @@ const approveButton = document.getElementById("approveRequest");
 const rejectButton = document.getElementById("rejectRequest");
 const rejectionReason = document.getElementById("rejectionReason");
 const reasonCount = document.getElementById("reasonCount");
+const reasonError = document.getElementById("reasonError");
 const toast = document.getElementById("toast");
+const searchFeedback = document.getElementById("searchFeedback");
+const helpButton = document.getElementById("helpButton");
+const helpPanel = document.getElementById("helpPanel");
+const closeHelp = document.getElementById("closeHelp");
+const confirmPanel = document.getElementById("confirmPanel");
+const confirmTitle = document.getElementById("confirmTitle");
+const confirmMessage = document.getElementById("confirmMessage");
+const confirmStudent = document.getElementById("confirmStudent");
+const confirmItem = document.getElementById("confirmItem");
+const confirmConsequence = document.getElementById("confirmConsequence");
+const confirmDecision = document.getElementById("confirmDecision");
+const cancelDecision = document.getElementById("cancelDecision");
 let selectedRequestId = 1;
 let toastTimer;
+let pendingDecision = null;
+let lastFocus = null;
+let lastDecision = null;
 
 function setSidebar(open) {
     sidebar.classList.toggle("open", open);
@@ -38,6 +54,7 @@ closeSidebar.addEventListener("click", () => setSidebar(false));
 sidebarBackdrop.addEventListener("click", () => setSidebar(false));
 collapseSidebar.addEventListener("click", () => dashboard.classList.toggle("sidebar-collapsed"));
 document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && confirmPanel && !confirmPanel.hidden) closeConfirmPanel();
     if (event.key === "Escape") setSidebar(false);
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
@@ -82,6 +99,8 @@ function selectRequest(id) {
     rejectButton.disabled = resolved;
     rejectionReason.disabled = resolved;
     rejectionReason.value = "";
+    rejectionReason.setAttribute("aria-invalid", "false");
+    reasonError.hidden = true;
     reasonCount.textContent = "0";
     refreshIcons();
 }
@@ -102,19 +121,40 @@ function normalize(value) {
 
 function applySearch() {
     const query = normalize(globalSearch.value);
+    let visibleCount = 0;
     searchableItems.forEach((item) => {
-        item.hidden = !normalize(item.dataset.searchable).includes(query);
+        const visible = normalize(item.dataset.searchable).includes(query);
+        item.hidden = !visible;
+        if (visible) visibleCount += 1;
     });
     requestEmpty.hidden = requestRows.some((row) => !row.hidden);
+    searchFeedback.textContent = query
+        ? `${visibleCount} ${visibleCount === 1 ? "registro encontrado" : "registros encontrados"} para "${globalSearch.value.trim()}".`
+        : "Mostrando todos os registros do painel.";
 }
 
 globalSearch.addEventListener("input", applySearch);
 
-function showToast(message) {
+function showToast(message, actionLabel, action) {
     clearTimeout(toastTimer);
-    toast.textContent = message;
+    toast.innerHTML = "";
+    const text = document.createElement("span");
+    text.textContent = message;
+    toast.append(text);
+
+    if (actionLabel && action) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = actionLabel;
+        button.addEventListener("click", () => {
+            action();
+            toast.classList.remove("show");
+        });
+        toast.append(button);
+    }
+
     toast.classList.add("show");
-    toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 4800);
 }
 
 function updatePendingCount() {
@@ -129,6 +169,7 @@ function addActivity(message, type, icon) {
     item.innerHTML = `<span class="activity-icon ${type}"><i data-lucide="${icon}"></i></span><p>${message}</p><time>agora</time>`;
     document.getElementById("activityList").prepend(item);
     refreshIcons();
+    return item;
 }
 
 function resolveRequest(status) {
@@ -137,6 +178,13 @@ function resolveRequest(status) {
     const badge = row.querySelector(".badge");
     if (badge.textContent !== "Pendente") return;
 
+    const previous = {
+        row,
+        badgeText: badge.textContent,
+        badgeClass: badge.className,
+        detailStatus: document.getElementById("detailStatus").textContent,
+        activeLoans: document.getElementById("activeLoansMetric").textContent
+    };
     badge.textContent = status;
     badge.className = `badge ${status === "Aprovada" ? "approved" : "rejected"}`;
     document.getElementById("detailStatus").textContent = `Solicitação ${status.toLowerCase()}`;
@@ -150,26 +198,99 @@ function resolveRequest(status) {
         const activeLoansMetric = document.getElementById("activeLoansMetric");
         activeLoansMetric.textContent = Number(activeLoansMetric.textContent) + 1;
     }
-    addActivity(
+    const activityItem = addActivity(
         `Solicitação ${approved ? "aprovada" : "recusada"} · ${request.name} · ${request.item}`,
         approved ? "success" : "alert",
         approved ? "check" : "x"
     );
-    showToast(`Solicitação de ${request.name} ${approved ? "aprovada" : "recusada"}.`);
+    lastDecision = { previous, activityItem, requestId: selectedRequestId };
+    showToast(
+        `Solicitação de ${request.name} ${approved ? "aprovada" : "recusada"}. Métricas e histórico foram atualizados.`,
+        "Desfazer",
+        undoLastDecision
+    );
 }
 
-approveButton.addEventListener("click", () => resolveRequest("Aprovada"));
+function openConfirmPanel(status, trigger) {
+    const request = requests[selectedRequestId];
+    const approved = status === "Aprovada";
+    pendingDecision = status;
+    lastFocus = trigger || document.activeElement;
+    confirmTitle.textContent = approved ? "Aprovar solicitação?" : "Recusar solicitação?";
+    confirmMessage.textContent = approved
+        ? "O aluno será autorizado a retirar este equipamento no almoxarifado."
+        : "O aluno verá a recusa junto com o motivo informado.";
+    confirmStudent.textContent = `${request.name} · RA ${request.ra}`;
+    confirmItem.textContent = `${request.item} · ${request.code}`;
+    confirmConsequence.textContent = approved
+        ? "Status muda para Aprovada e Empréstimos ativos aumenta em 1."
+        : "Status muda para Recusada e a solicitação sai das pendentes.";
+    confirmDecision.className = `decision ${approved ? "approve" : "reject"}`;
+    confirmDecision.textContent = approved ? "Confirmar aprovação" : "Confirmar recusa";
+    confirmPanel.hidden = false;
+    confirmPanel.setAttribute("aria-hidden", "false");
+    confirmDecision.focus();
+}
+
+function closeConfirmPanel() {
+    confirmPanel.hidden = true;
+    confirmPanel.setAttribute("aria-hidden", "true");
+    pendingDecision = null;
+    if (lastFocus) lastFocus.focus();
+}
+
+function undoLastDecision() {
+    if (!lastDecision) return;
+    const { previous, activityItem, requestId } = lastDecision;
+    const badge = previous.row.querySelector(".badge");
+    badge.textContent = previous.badgeText;
+    badge.className = previous.badgeClass;
+    document.getElementById("activeLoansMetric").textContent = previous.activeLoans;
+    if (activityItem) activityItem.remove();
+    updatePendingCount();
+    selectRequest(requestId);
+    document.getElementById("detailStatus").textContent = previous.detailStatus;
+    lastDecision = null;
+    showToast("Decisão desfeita. A solicitação voltou para Pendente.");
+}
+
+approveButton.addEventListener("click", () => openConfirmPanel("Aprovada", approveButton));
 rejectButton.addEventListener("click", () => {
     if (!rejectionReason.value.trim()) {
         rejectionReason.focus();
+        rejectionReason.setAttribute("aria-invalid", "true");
+        reasonError.hidden = false;
         showToast("Informe o motivo antes de recusar a solicitação.");
         return;
     }
-    resolveRequest("Recusada");
+    openConfirmPanel("Recusada", rejectButton);
 });
 
 rejectionReason.addEventListener("input", () => {
     reasonCount.textContent = rejectionReason.value.length;
+    if (rejectionReason.value.trim()) {
+        rejectionReason.setAttribute("aria-invalid", "false");
+        reasonError.hidden = true;
+    }
+});
+
+confirmDecision.addEventListener("click", () => {
+    if (!pendingDecision) return;
+    const status = pendingDecision;
+    closeConfirmPanel();
+    resolveRequest(status);
+});
+
+cancelDecision.addEventListener("click", closeConfirmPanel);
+
+helpButton.addEventListener("click", () => {
+    helpPanel.hidden = false;
+    closeHelp.focus();
+});
+
+closeHelp.addEventListener("click", () => {
+    helpPanel.hidden = true;
+    helpButton.focus();
 });
 
 window.addEventListener("resize", () => {

@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#FFFFFF">
+    <title>Painel do Tecnico - Media Fidelidade</title>
+    <style>
+        :root {
+            --page: #ffffff;
+            --surface: #f4f4f4;
+            --surface-soft: #fafafa;
+            --fill: #e6e6e6;
+            --ink: #111111;
+            --muted: #606060;
+            --line: #222222;
+            --line-soft: #9a9a9a;
+            --sidebar: 238px;
+            --topbar: 76px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-width: 320px;
+            min-height: 100vh;
+            background: var(--page);
+            color: var(--ink);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            display: block;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        .box {
+            border: 1.5px solid var(--line);
+            background: var(--surface-soft);
+        }
+
+        .dashed {
+            border-style: dashed;
+            border-color: var(--line-soft);
+        }
+
+        .label {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .placeholder-line {
+            height: 10px;
+            border-radius: 99px;
+            background: #cfcfcf;
+        }
+
+        .placeholder-line.long { width: 90%; }
+        .placeholder-line.mid { width: 68%; }
+        .placeholder-line.short { width: 46%; }
+
+        .dashboard {
+            min-height: 100vh;
+            display: grid;
+            grid-template: var(--topbar) 1fr / var(--sidebar) minmax(0, 1fr);
+            border: 2px solid var(--line);
+        }
+
+        .topbar {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: var(--sidebar) minmax(240px, 620px) minmax(170px, 1fr);
+            align-items: center;
+            gap: 1rem;
+            padding: 0 1rem;
+            border-bottom: 2px solid var(--line);
+            background: var(--surface);
+        }
+
+        .brand {
+            min-width: 0;
+            display: grid;
+            grid-template-columns: 42px minmax(0, 1fr);
+            align-items: center;
+            gap: 0.65rem;
+        }
+
+        .brand-icon,
+        .icon-frame,
+        .avatar,
+        .metric-icon,
+        .large-avatar,
+        .item-icon,
+        .activity-icon {
+            display: grid;
+            place-items: center;
+            background: var(--fill);
+        }
+
+        .brand-icon,
+        .icon-frame {
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius-sm);
+        }
+
+        .brand strong,
+        .brand small,
+        .profile strong,
+        .profile small {
+            display: block;
+        }
+
+        .brand strong {
+            font-size: 0.94rem;
+        }
+
+        .brand small,
+        .profile small {
+            margin-top: 0.12rem;
+            color: var(--muted);
+            font-size: 0.66rem;
+            font-weight: 700;
+        }
+
+        .search-box {
+            height: 44px;
+            padding: 0 0.75rem;
+            display: grid;
+            grid-template-columns: 22px minmax(0, 1fr) 52px;
+            align-items: center;
+            gap: 0.65rem;
+            border-radius: var(--radius-md);
+            color: var(--muted);
+            font-size: 0.76rem;
+            font-weight: 700;
+        }
+
+        .kbd {
+            height: 26px;
+            display: grid;
+            place-items: center;
+            border-radius: 6px;
+            font-size: 0.64rem;
+            color: var(--ink);
+        }
+
+        .top-actions {
+            min-width: 0;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 0.65rem;
+        }
+
+        .notification {
+            position: relative;
+        }
+
+        .notification::after {
+            content: "3";
+            position: absolute;
+            top: -7px;
+            right: -7px;
+            width: 20px;
+            height: 20px;
+            display: grid;
+            place-items: center;
+            border: 1.5px solid var(--line);
+            border-radius: 50%;
+            background: var(--page);
+            font-size: 0.58rem;
+            font-weight: 800;
+        }
+
+        .profile {
+            min-width: 132px;
+            height: 44px;
+            padding: 0 0.55rem;
+            display: grid;
+            grid-template-columns: 34px minmax(0, 1fr) 16px;
+            align-items: center;
+            gap: 0.5rem;
+            border-radius: var(--radius-md);
+        }
+
+        .avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+        }
+
+        .sidebar {
+            padding: 1rem 0.75rem;
+            border-right: 2px solid var(--line);
+            background: var(--surface);
+        }
+
+        .sidebar-title {
+            margin: 0 0 0.75rem;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .side-list {
+            display: grid;
+            gap: 0.35rem;
+        }
+
+        .side-link {
+            min-height: 44px;
+            padding: 0.65rem 0.7rem;
+            display: grid;
+            grid-template-columns: 20px minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 0.62rem;
+            border-radius: var(--radius-sm);
+            color: var(--ink);
+            font-size: 0.74rem;
+            font-weight: 700;
+        }
+
+        .side-link .icon {
+            width: 18px;
+            height: 18px;
+        }
+
+        .count {
+            min-width: 24px;
+            height: 22px;
+            display: grid;
+            place-items: center;
+            border-radius: 99px;
+            font-size: 0.58rem;
+            font-weight: 800;
+        }
+
+        .collapse-note {
+            margin-top: 1rem;
+            min-height: 44px;
+            padding: 0.65rem 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 0.62rem;
+            border-radius: var(--radius-sm);
+            color: var(--muted);
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+
+        .main {
+            min-width: 0;
+            padding: 1rem;
+            overflow: hidden;
+        }
+
+        .page-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .page-heading h1 {
+            margin: 0.2rem 0 0;
+            font-size: 1.45rem;
+        }
+
+        .page-heading p:last-child {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(120px, 1fr));
+            gap: 0.7rem;
+            margin-bottom: 1rem;
+        }
+
+        .metric-card {
+            min-height: 98px;
+            padding: 0.8rem;
+            display: grid;
+            grid-template-columns: 38px minmax(0, 1fr);
+            align-items: start;
+            gap: 0.65rem;
+            border-radius: var(--radius-md);
+        }
+
+        .metric-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-sm);
+        }
+
+        .metric-card small,
+        .panel-header p {
+            color: var(--muted);
+            font-size: 0.66rem;
+            font-weight: 700;
+        }
+
+        .metric-card strong {
+            display: block;
+            margin: 0.25rem 0;
+            font-size: 1.35rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.9fr);
+            gap: 1rem;
+        }
+
+        .column {
+            min-width: 0;
+            display: grid;
+            gap: 1rem;
+            align-content: start;
+        }
+
+        .panel {
+            min-width: 0;
+            padding: 0.9rem;
+            border-radius: var(--radius-md);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .panel-header h2 {
+            margin: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-size: 0.98rem;
+        }
+
+        .panel-header p {
+            margin: 0.25rem 0 0;
+        }
+
+        .text-link {
+            width: 72px;
+            height: 26px;
+            border-radius: 99px;
+        }
+
+        .table {
+            overflow: hidden;
+            border-radius: var(--radius-sm);
+        }
+
+        .table-head,
+        .table-row {
+            display: grid;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.62rem;
+        }
+
+        .requests .table-head,
+        .requests .table-row {
+            grid-template-columns: 22px 1.1fr 0.7fr 1.2fr 42px 0.72fr 78px 34px;
+        }
+
+        .compact-table .table-head,
+        .compact-table .table-row {
+            grid-template-columns: 1fr 1fr 0.62fr 78px;
+        }
+
+        .table-head {
+            background: var(--surface);
+            color: var(--muted);
+            font-size: 0.62rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .table-row {
+            min-height: 48px;
+            border-top: 1.5px dashed var(--line-soft);
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+
+        .radio {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--fill);
+        }
+
+        .status-pill,
+        .row-action {
+            height: 26px;
+            display: grid;
+            place-items: center;
+            border-radius: 99px;
+            font-size: 0.58rem;
+            font-weight: 800;
+        }
+
+        .row-action {
+            width: 28px;
+            border-radius: var(--radius-sm);
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: minmax(210px, 0.9fr) minmax(220px, 1fr) minmax(170px, 0.62fr);
+            gap: 0.8rem;
+        }
+
+        .student-summary,
+        .item-summary,
+        .decision-panel {
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .student-profile {
+            display: grid;
+            grid-template-columns: 52px minmax(0, 1fr);
+            gap: 0.65rem;
+            align-items: center;
+        }
+
+        .large-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+        }
+
+        .history-box {
+            margin-top: 0.8rem;
+            padding: 0.7rem;
+            display: grid;
+            gap: 0.45rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.72rem;
+            color: var(--muted);
+        }
+
+        .item-heading {
+            display: grid;
+            grid-template-columns: 54px minmax(0, 1fr);
+            align-items: center;
+            gap: 0.65rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .item-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: var(--radius-sm);
+        }
+
+        .detail-stats {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.55rem;
+        }
+
+        .stat-box {
+            min-height: 48px;
+            padding: 0.55rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .reason-box {
+            min-height: 66px;
+            margin-top: 0.7rem;
+            padding: 0.65rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .decision-panel {
+            display: grid;
+            gap: 0.55rem;
+        }
+
+        .decision {
+            min-height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.72rem;
+            font-weight: 800;
+        }
+
+        .text-area-frame {
+            min-height: 72px;
+            border-radius: var(--radius-sm);
+        }
+
+        .activity-list {
+            display: grid;
+            gap: 0.55rem;
+        }
+
+        .activity-row {
+            min-height: 54px;
+            padding: 0.6rem;
+            display: grid;
+            grid-template-columns: 34px minmax(0, 1fr) 42px;
+            align-items: center;
+            gap: 0.6rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .activity-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+        }
+
+        @media (max-width: 980px) {
+            .dashboard {
+                display: block;
+                border: 0;
+            }
+
+            .topbar {
+                grid-template-columns: 1fr;
+                height: auto;
+                padding: 0.85rem;
+            }
+
+            .sidebar {
+                margin: 0.75rem;
+                border: 1.5px solid var(--line);
+                border-radius: var(--radius-md);
+            }
+
+            .metrics,
+            .dashboard-grid,
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .requests .table-head,
+            .requests .table-row {
+                grid-template-columns: 22px 1fr 0.8fr 1fr;
+            }
+
+            .requests .hide-mobile {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard" aria-label="Diagrama de media fidelidade do painel tecnico">
+        <header class="topbar" aria-label="Cabecalho do painel tecnico">
+            <div class="brand">
+                <div class="brand-icon box">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 7 9-4 9 4-9 4-9-4Z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>
+                </div>
+                <div>
+                    <strong>Almoxarifado</strong>
+                    <small>Painel do Tecnico</small>
+                </div>
+            </div>
+
+            <div class="search-box box" aria-label="Busca global conceitual">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <span>Pesquisar aluno, RA, item, codigo ou patrimonio</span>
+                <span class="kbd box dashed">Ctrl K</span>
+            </div>
+
+            <div class="top-actions" aria-label="Acoes do tecnico">
+                <div class="icon-frame box notification" aria-label="Notificacoes">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 21h4"/><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/></svg>
+                </div>
+                <div class="profile box" aria-label="Perfil do tecnico">
+                    <span class="avatar">
+                        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+                    </span>
+                    <span><strong>Tecnico</strong><small>Online</small></span>
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                </div>
+            </div>
+        </header>
+
+        <aside class="sidebar" aria-label="Navegacao lateral conceitual">
+            <p class="sidebar-title">Menu tecnico</p>
+            <nav class="side-list">
+                <div class="side-link box"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg><span>Dashboard</span><span></span></div>
+                <div class="side-link box"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M12 18v-6"/><path d="M9 15h6"/></svg><span>Solicitacoes</span><b class="count box dashed">4</b></div>
+                <div class="side-link box"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 7 9-4 9 4-9 4-9-4Z"/><path d="M3 7v10l9 4 9-4V7"/><path d="m9 16 2 2 4-4"/></svg><span>Emprestimos ativos</span><b class="count box dashed">23</b></div>
+                <div class="side-link box"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 7 9-4 9 4-9 4-9-4Z"/><path d="M3 7v10l9 4 9-4V7"/></svg><span>Devolvidos</span><span></span></div>
+                <div class="side-link box"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>Atrasos</span><b class="count box dashed">5</b></div>
+                <div class="side-link box"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-3 3-3-3 3-3Z"/></svg><span>Manutencao</span><b class="count box dashed">4</b></div>
+                <div class="side-link box"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg><span>Produtos</span><span></span></div>
+                <div class="side-link box"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg><span>Relatorios</span><span></span></div>
+                <div class="side-link box"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Usuarios</span><span></span></div>
+                <div class="side-link box"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15.4 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.24.38.4.8.6 1 .3.3.67.5 1.1.5H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51.5Z"/></svg><span>Configuracoes</span><span></span></div>
+            </nav>
+            <div class="collapse-note box dashed">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M9 4v16"/><path d="m15 9-3 3 3 3"/></svg>
+                Recolher menu
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="page-heading">
+                <div>
+                    <p class="label">Controle patrimonial</p>
+                    <h1>Dashboard</h1>
+                </div>
+                <p>Visao geral do almoxarifado · data do dia</p>
+            </div>
+
+            <section class="metrics" aria-label="Indicadores conceituais">
+                <article class="metric-card box"><span class="metric-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg></span><div><small>Solicitacoes pendentes</small><strong>4</strong><div class="placeholder-line mid"></div></div></article>
+                <article class="metric-card box"><span class="metric-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><div><small>Emprestimos ativos</small><strong>23</strong><div class="placeholder-line mid"></div></div></article>
+                <article class="metric-card box"><span class="metric-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span><div><small>Em atraso</small><strong>5</strong><div class="placeholder-line mid"></div></div></article>
+                <article class="metric-card box"><span class="metric-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><div><small>Devolvidos hoje</small><strong>7</strong><div class="placeholder-line mid"></div></div></article>
+                <article class="metric-card box"><span class="metric-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-3 3-3-3 3-3Z"/></svg></span><div><small>Em manutencao</small><strong>4</strong><div class="placeholder-line mid"></div></div></article>
+            </section>
+
+            <div class="dashboard-grid">
+                <div class="column">
+                    <section class="panel box requests" aria-label="Tabela de solicitacoes pendentes">
+                        <header class="panel-header">
+                            <div>
+                                <h2><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg>Solicitacoes pendentes</h2>
+                                <p>Selecione uma solicitacao para analisar</p>
+                            </div>
+                            <div class="text-link box dashed" aria-label="Ver todas"></div>
+                        </header>
+                        <div class="table box">
+                            <div class="table-head"><span></span><span>Aluno</span><span>RA</span><span>Item</span><span class="hide-mobile">Qtd.</span><span class="hide-mobile">Data</span><span class="hide-mobile">Status</span><span></span></div>
+                            <div class="table-row"><span class="radio box"></span><span>Aluno</span><span>RA</span><span>Equipamento</span><span class="hide-mobile">1</span><span class="hide-mobile">Data</span><span class="status-pill box dashed hide-mobile">Pendente</span><span class="row-action box dashed"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span></div>
+                            <div class="table-row"><span class="radio box"></span><span>Aluno</span><span>RA</span><span>Equipamento</span><span class="hide-mobile">1</span><span class="hide-mobile">Data</span><span class="status-pill box dashed hide-mobile">Pendente</span><span class="row-action box dashed"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span></div>
+                            <div class="table-row"><span class="radio box"></span><span>Aluno</span><span>RA</span><span>Equipamento</span><span class="hide-mobile">1</span><span class="hide-mobile">Data</span><span class="status-pill box dashed hide-mobile">Pendente</span><span class="row-action box dashed"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span></div>
+                        </div>
+                    </section>
+
+                    <section class="panel box" aria-label="Detalhes e decisao da solicitacao">
+                        <header class="panel-header">
+                            <div>
+                                <h2><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>Detalhes da solicitacao</h2>
+                                <p>Aguardando analise</p>
+                            </div>
+                        </header>
+                        <div class="detail-grid">
+                            <div class="student-summary box dashed">
+                                <div class="student-profile">
+                                    <span class="large-avatar"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg></span>
+                                    <div>
+                                        <p class="label">Aluno</p>
+                                        <div class="placeholder-line long"></div>
+                                        <div class="placeholder-line short" style="margin-top: .5rem;"></div>
+                                    </div>
+                                </div>
+                                <div class="history-box box dashed">
+                                    <strong>Historico</strong>
+                                    <div class="placeholder-line long"></div>
+                                    <div class="placeholder-line mid"></div>
+                                </div>
+                            </div>
+
+                            <div class="item-summary box dashed">
+                                <div class="item-heading">
+                                    <span class="item-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="12" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+                                    <div>
+                                        <p class="label">Item solicitado</p>
+                                        <div class="placeholder-line long"></div>
+                                        <div class="placeholder-line short" style="margin-top: .5rem;"></div>
+                                    </div>
+                                </div>
+                                <div class="detail-stats">
+                                    <div class="stat-box box dashed"><p class="label">Quantidade</p><div class="placeholder-line short"></div></div>
+                                    <div class="stat-box box dashed"><p class="label">Disponivel</p><div class="placeholder-line mid"></div></div>
+                                    <div class="stat-box box dashed"><p class="label">Solicitado em</p><div class="placeholder-line mid"></div></div>
+                                    <div class="stat-box box dashed"><p class="label">Vencimento</p><div class="placeholder-line mid"></div></div>
+                                </div>
+                                <div class="reason-box box dashed">
+                                    <p class="label">Motivo da solicitacao</p>
+                                    <div class="placeholder-line long"></div>
+                                    <div class="placeholder-line mid" style="margin-top: .5rem;"></div>
+                                </div>
+                            </div>
+
+                            <div class="decision-panel box dashed">
+                                <div class="decision box"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Aprovar</div>
+                                <div class="decision box"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg>Recusar</div>
+                                <div class="decision box"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>E-mail</div>
+                                <p class="label">Motivo da recusa</p>
+                                <div class="text-area-frame box dashed"></div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="column">
+                    <section class="panel box compact-table" aria-label="Itens em atraso">
+                        <header class="panel-header">
+                            <div><h2><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Itens em atraso</h2></div>
+                            <div class="text-link box dashed"></div>
+                        </header>
+                        <div class="table box">
+                            <div class="table-head"><span>Aluno</span><span>Item</span><span>Atraso</span><span>Urgencia</span></div>
+                            <div class="table-row"><span>Aluno</span><span>Item</span><span>Dias</span><span class="status-pill box dashed">Alta</span></div>
+                            <div class="table-row"><span>Aluno</span><span>Item</span><span>Dias</span><span class="status-pill box dashed">Media</span></div>
+                            <div class="table-row"><span>Aluno</span><span>Item</span><span>Dias</span><span class="status-pill box dashed">Baixa</span></div>
+                        </div>
+                    </section>
+
+                    <section class="panel box compact-table" aria-label="Manutencao e defeitos">
+                        <header class="panel-header">
+                            <div><h2><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-3 3-3-3 3-3Z"/></svg>Manutencao / Defeitos</h2></div>
+                            <div class="text-link box dashed"></div>
+                        </header>
+                        <div class="table box">
+                            <div class="table-head"><span>Item</span><span>Problema</span><span>Retorno</span><span>Status</span></div>
+                            <div class="table-row"><span>Item</span><span>Problema</span><span>Data</span><span class="status-pill box dashed">Status</span></div>
+                            <div class="table-row"><span>Item</span><span>Problema</span><span>Data</span><span class="status-pill box dashed">Status</span></div>
+                        </div>
+                    </section>
+
+                    <section class="panel box" aria-label="Atividades recentes">
+                        <header class="panel-header">
+                            <div><h2><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>Atividades recentes</h2></div>
+                            <div class="text-link box dashed"></div>
+                        </header>
+                        <div class="activity-list">
+                            <div class="activity-row box dashed"><span class="activity-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><div class="placeholder-line long"></div><span class="label">Hora</span></div>
+                            <div class="activity-row box dashed"><span class="activity-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span><div class="placeholder-line long"></div><span class="label">Hora</span></div>
+                            <div class="activity-row box dashed"><span class="activity-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span><div class="placeholder-line long"></div><span class="label">Hora</span></div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

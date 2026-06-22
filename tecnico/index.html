@@ -67,8 +67,21 @@
                     <p class="eyebrow">Controle patrimonial</p>
                     <h1 id="pageTitle">Dashboard</h1>
                 </div>
-                <p>Visão geral do almoxarifado · <strong>16 de maio de 2025</strong></p>
+                <div class="heading-actions">
+                    <p>Visão geral do almoxarifado · <strong>16 de maio de 2025</strong></p>
+                    <button class="text-button" id="helpButton" type="button">Ajuda</button>
+                </div>
             </div>
+
+            <section class="help-panel" id="helpPanel" aria-labelledby="helpTitle" hidden>
+                <div>
+                    <h2 id="helpTitle">Ajuda rápida do técnico</h2>
+                    <p>Selecione uma solicitação, confira aluno, item e disponibilidade. Para recusar, informe o motivo para que o aluno saiba como corrigir.</p>
+                </div>
+                <button class="text-button" id="closeHelp" type="button">Fechar</button>
+            </section>
+
+            <p class="search-feedback" id="searchFeedback" role="status" aria-live="polite">Mostrando todos os registros do painel.</p>
 
             <section class="metrics" aria-label="Indicadores">
                 <article class="metric-card blue">
@@ -140,8 +153,9 @@
                                 <button class="decision reject" id="rejectRequest" type="button"><i data-lucide="circle-x"></i> Recusar</button>
                                 <button class="decision secondary" type="button"><i data-lucide="mail"></i> Enviar e-mail</button>
                                 <label for="rejectionReason">Motivo da recusa</label>
-                                <textarea id="rejectionReason" maxlength="200" placeholder="Informe o motivo da recusa..."></textarea>
-                                <small><span id="reasonCount">0</span>/200 caracteres</small>
+                                <textarea id="rejectionReason" maxlength="200" aria-describedby="reasonError reasonCountText" placeholder="Informe o motivo da recusa..."></textarea>
+                                <p class="field-error" id="reasonError" role="alert" hidden>Informe o motivo da recusa para orientar o aluno.</p>
+                                <small id="reasonCountText"><span id="reasonCount">0</span>/200 caracteres</small>
                             </div>
                         </div>
                     </section>
@@ -191,6 +205,22 @@
                 </div>
             </div>
         </main>
+        <section class="confirm-panel" id="confirmPanel" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" aria-hidden="true" hidden>
+            <div class="confirm-card">
+                <span class="eyebrow">Confirmar decisão</span>
+                <h2 id="confirmTitle">Revise antes de continuar</h2>
+                <p id="confirmMessage">-</p>
+                <dl>
+                    <div><dt>Aluno</dt><dd id="confirmStudent">-</dd></div>
+                    <div><dt>Item</dt><dd id="confirmItem">-</dd></div>
+                    <div><dt>Consequência</dt><dd id="confirmConsequence">-</dd></div>
+                </dl>
+                <div class="confirm-actions">
+                    <button class="decision secondary" id="cancelDecision" type="button">Cancelar</button>
+                    <button class="decision approve" id="confirmDecision" type="button">Confirmar</button>
+                </div>
+            </div>
+        </section>
         <div class="toast" id="toast" role="status" aria-live="polite"></div>
     </div>
     <script src="script.js"></script>
