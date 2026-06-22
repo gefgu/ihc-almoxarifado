@@ -68,7 +68,7 @@
                     <h1 id="pageTitle">Dashboard</h1>
                 </div>
                 <div class="heading-actions">
-                    <p>Visão geral do almoxarifado · <strong>16 de maio de 2025</strong></p>
+                    <p>Visão geral do almoxarifado · <strong>16 de maio de 2025 · 10:30</strong></p>
                     <button class="text-button" id="helpButton" type="button">Ajuda</button>
                 </div>
             </div>
@@ -86,7 +86,7 @@
             <section class="metrics" aria-label="Indicadores">
                 <article class="metric-card blue">
                     <span class="metric-icon"><i data-lucide="file-clock"></i></span>
-                    <div><small>Solicitações pendentes</small><strong id="pendingMetric">4</strong><p><b>↑ 2</b> desde ontem</p></div>
+                    <div><small>Solicitações pendentes</small><strong id="pendingMetric">4</strong><p><b>↑ 2</b> na última hora</p></div>
                 </article>
                 <article class="metric-card green">
                     <span class="metric-icon"><i data-lucide="calendar-check"></i></span>
@@ -94,11 +94,11 @@
                 </article>
                 <article class="metric-card orange">
                     <span class="metric-icon"><i data-lucide="clock-alert"></i></span>
-                    <div><small>Em atraso</small><strong>5</strong><p><b>↑ 1</b> desde ontem</p></div>
+                    <div><small>Em atraso</small><strong>5</strong><p><b>↑ 1</b> na última hora</p></div>
                 </article>
                 <article class="metric-card purple">
                     <span class="metric-icon"><i data-lucide="circle-check-big"></i></span>
-                    <div><small>Devolvidos hoje</small><strong>7</strong><p><b>↑ 3</b> desde ontem</p></div>
+                    <div><small>Devolvidos hoje</small><strong>7</strong><p><b>↑ 3</b> nas últimas 2 horas</p></div>
                 </article>
                 <article class="metric-card yellow">
                     <span class="metric-icon"><i data-lucide="wrench"></i></span>
@@ -118,16 +118,16 @@
                                 <thead><tr><th></th><th>Aluno</th><th>RA</th><th>Item</th><th>Qtd.</th><th>Data</th><th>Status</th><th>Ações</th></tr></thead>
                                 <tbody id="requestTable">
                                     <tr class="request-row selected" tabindex="0" data-request-id="1" data-searchable="João Martins 20231234 Osciloscópio Digital PAT-25012">
-                                        <td><span class="radio-dot"></span></td><td>João Martins</td><td>20231234</td><td>Osciloscópio Digital</td><td>1</td><td>16/05/2025</td><td><span class="badge pending">Pendente</span></td><td><button class="row-action" type="button" aria-label="Selecionar João Martins"><i data-lucide="chevron-right"></i></button></td>
+                                        <td><span class="radio-dot"></span></td><td>João Martins</td><td>20231234</td><td>Osciloscópio Digital</td><td>1</td><td>09:24</td><td><span class="badge pending">Pendente</span></td><td><button class="row-action" type="button" aria-label="Selecionar João Martins"><i data-lucide="chevron-right"></i></button></td>
                                     </tr>
                                     <tr class="request-row" tabindex="0" data-request-id="2" data-searchable="Maria Souza 20224567 Multímetro Digital PAT-18045">
-                                        <td><span class="radio-dot"></span></td><td>Maria Souza</td><td>20224567</td><td>Multímetro Digital</td><td>1</td><td>16/05/2025</td><td><span class="badge pending">Pendente</span></td><td><button class="row-action" type="button" aria-label="Selecionar Maria Souza"><i data-lucide="chevron-right"></i></button></td>
+                                        <td><span class="radio-dot"></span></td><td>Maria Souza</td><td>20224567</td><td>Multímetro Digital</td><td>1</td><td>09:02</td><td><span class="badge pending">Pendente</span></td><td><button class="row-action" type="button" aria-label="Selecionar Maria Souza"><i data-lucide="chevron-right"></i></button></td>
                                     </tr>
                                     <tr class="request-row" tabindex="0" data-request-id="3" data-searchable="Pedro Lima 20239876 Fonte DC Regulável PAT-22410">
-                                        <td><span class="radio-dot"></span></td><td>Pedro Lima</td><td>20239876</td><td>Fonte DC Regulável</td><td>1</td><td>16/05/2025</td><td><span class="badge pending">Pendente</span></td><td><button class="row-action" type="button" aria-label="Selecionar Pedro Lima"><i data-lucide="chevron-right"></i></button></td>
+                                        <td><span class="radio-dot"></span></td><td>Pedro Lima</td><td>20239876</td><td>Fonte DC Regulável</td><td>1</td><td>08:41</td><td><span class="badge pending">Pendente</span></td><td><button class="row-action" type="button" aria-label="Selecionar Pedro Lima"><i data-lucide="chevron-right"></i></button></td>
                                     </tr>
                                     <tr class="request-row" tabindex="0" data-request-id="4" data-searchable="Ana Pereira 20231011 Gerador de Função PAT-19008">
-                                        <td><span class="radio-dot"></span></td><td>Ana Pereira</td><td>20231011</td><td>Gerador de Função</td><td>1</td><td>15/05/2025</td><td><span class="badge pending">Pendente</span></td><td><button class="row-action" type="button" aria-label="Selecionar Ana Pereira"><i data-lucide="chevron-right"></i></button></td>
+                                        <td><span class="radio-dot"></span></td><td>Ana Pereira</td><td>20231011</td><td>Gerador de Função</td><td>1</td><td>08:18</td><td><span class="badge pending">Pendente</span></td><td><button class="row-action" type="button" aria-label="Selecionar Ana Pereira"><i data-lucide="chevron-right"></i></button></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -145,7 +145,7 @@
                             </div>
                             <div class="item-summary">
                                 <div class="item-heading"><span class="item-visual"><i id="detailIcon" data-lucide="monitor-speaker"></i></span><div><small>Item solicitado</small><h3 id="detailItem">Osciloscópio Digital</h3><p id="detailCode">PAT-25012</p></div></div>
-                                <div class="detail-stats"><span>Quantidade solicitada <b>1</b></span><span>Quantidade disponível <b id="detailAvailable">14 unidades</b></span><span>Data da solicitação <b id="detailDate">16/05/2025 09:24</b></span><span>Data de vencimento <b>28/05/2025</b></span></div>
+                                <div class="detail-stats"><span>Quantidade solicitada <b>1</b></span><span>Quantidade disponível <b id="detailAvailable">14 unidades</b></span><span>Horário da solicitação <b id="detailDate">09:24</b></span><span>Limite de devolução <b id="detailDue">15:24</b></span></div>
                                 <div class="reason"><small>Motivo da solicitação</small><p id="detailReason">Necessário para realização de ensaios e captura de sinais no projeto de laboratório.</p></div>
                             </div>
                             <div class="decision-panel">
@@ -168,11 +168,11 @@
                             <table class="compact-table">
                                 <thead><tr><th>Aluno</th><th>Item</th><th>Atraso</th><th>Urgência</th></tr></thead>
                                 <tbody>
-                                    <tr data-searchable="Pedro Almeida Multímetro Digital"><td>Pedro Almeida</td><td>Multímetro Digital</td><td class="danger-text">7 dias</td><td><span class="badge high">Alta</span></td></tr>
-                                    <tr data-searchable="Beatriz Costa Osciloscópio Digital"><td>Beatriz Costa</td><td>Osciloscópio Digital</td><td class="danger-text">5 dias</td><td><span class="badge high">Alta</span></td></tr>
-                                    <tr data-searchable="Lucas Ferreira Fonte DC Regulável"><td>Lucas Ferreira</td><td>Fonte DC Regulável</td><td>3 dias</td><td><span class="badge medium">Média</span></td></tr>
-                                    <tr data-searchable="Mariana Rocha Gerador de Função"><td>Mariana Rocha</td><td>Gerador de Função</td><td>2 dias</td><td><span class="badge medium">Média</span></td></tr>
-                                    <tr data-searchable="Gabriel Santos Kit Arduino"><td>Gabriel Santos</td><td>Kit Arduino</td><td>1 dia</td><td><span class="badge low">Baixa</span></td></tr>
+                                    <tr data-searchable="Pedro Almeida Multímetro Digital"><td>Pedro Almeida</td><td>Multímetro Digital</td><td class="danger-text">2h 20min</td><td><span class="badge high">Alta</span></td></tr>
+                                    <tr data-searchable="Beatriz Costa Osciloscópio Digital"><td>Beatriz Costa</td><td>Osciloscópio Digital</td><td class="danger-text">1h 45min</td><td><span class="badge high">Alta</span></td></tr>
+                                    <tr data-searchable="Lucas Ferreira Fonte DC Regulável"><td>Lucas Ferreira</td><td>Fonte DC Regulável</td><td>58min</td><td><span class="badge medium">Média</span></td></tr>
+                                    <tr data-searchable="Mariana Rocha Gerador de Função"><td>Mariana Rocha</td><td>Gerador de Função</td><td>35min</td><td><span class="badge medium">Média</span></td></tr>
+                                    <tr data-searchable="Gabriel Santos Kit Arduino"><td>Gabriel Santos</td><td>Kit Arduino</td><td>12min</td><td><span class="badge low">Baixa</span></td></tr>
                                 </tbody>
                             </table>
                         </div>

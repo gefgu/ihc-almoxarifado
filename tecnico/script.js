@@ -1,10 +1,10 @@
 if (window.lucide) lucide.createIcons();
 
 const requests = {
-    1: { name: "João Martins", ra: "20231234", course: "Engenharia Elétrica", email: "joao.martins@aluno.utfpr.br", item: "Osciloscópio Digital", code: "PAT-25012", available: "14 unidades", date: "16/05/2025 09:24", loans: 3, icon: "monitor-speaker", reason: "Necessário para realização de ensaios e captura de sinais no projeto de laboratório." },
-    2: { name: "Maria Souza", ra: "20224567", course: "Engenharia Eletrônica", email: "maria.souza@aluno.utfpr.br", item: "Multímetro Digital", code: "PAT-18045", available: "8 unidades", date: "16/05/2025 09:02", loans: 5, icon: "gauge", reason: "Uso em medições do projeto integrador da disciplina de circuitos." },
-    3: { name: "Pedro Lima", ra: "20239876", course: "Engenharia de Computação", email: "pedro.lima@aluno.utfpr.br", item: "Fonte DC Regulável", code: "PAT-22410", available: "6 unidades", date: "16/05/2025 08:41", loans: 2, icon: "battery-charging", reason: "Alimentação controlada para testes de um protótipo eletrônico." },
-    4: { name: "Ana Pereira", ra: "20231011", course: "Engenharia Elétrica", email: "ana.pereira@aluno.utfpr.br", item: "Gerador de Função", code: "PAT-19008", available: "4 unidades", date: "15/05/2025 16:18", loans: 4, icon: "audio-waveform", reason: "Geração de sinais para a validação de filtros analógicos em laboratório." }
+    1: { name: "João Martins", ra: "20231234", course: "Engenharia Elétrica", email: "joao.martins@aluno.utfpr.br", item: "Osciloscópio Digital", code: "PAT-25012", available: "14 unidades", date: "09:24", due: "15:24", loans: 3, icon: "monitor-speaker", reason: "Necessário para realização de ensaios e captura de sinais no projeto de laboratório." },
+    2: { name: "Maria Souza", ra: "20224567", course: "Engenharia Eletrônica", email: "maria.souza@aluno.utfpr.br", item: "Multímetro Digital", code: "PAT-18045", available: "8 unidades", date: "09:02", due: "15:02", loans: 5, icon: "gauge", reason: "Uso em medições do projeto integrador da disciplina de circuitos." },
+    3: { name: "Pedro Lima", ra: "20239876", course: "Engenharia de Computação", email: "pedro.lima@aluno.utfpr.br", item: "Fonte DC Regulável", code: "PAT-22410", available: "6 unidades", date: "08:41", due: "14:41", loans: 2, icon: "battery-charging", reason: "Alimentação controlada para testes de um protótipo eletrônico." },
+    4: { name: "Ana Pereira", ra: "20231011", course: "Engenharia Elétrica", email: "ana.pereira@aluno.utfpr.br", item: "Gerador de Função", code: "PAT-19008", available: "4 unidades", date: "08:18", due: "14:18", loans: 4, icon: "audio-waveform", reason: "Geração de sinais para a validação de filtros analógicos em laboratório." }
 };
 
 const dashboard = document.getElementById("dashboard");
@@ -88,6 +88,7 @@ function selectRequest(id) {
     document.getElementById("detailCode").textContent = request.code;
     document.getElementById("detailAvailable").textContent = request.available;
     document.getElementById("detailDate").textContent = request.date;
+    document.getElementById("detailDue").textContent = request.due;
     document.getElementById("detailReason").textContent = request.reason;
     const icon = document.getElementById("detailIcon");
     icon.setAttribute("data-lucide", request.icon);
@@ -223,7 +224,7 @@ function openConfirmPanel(status, trigger) {
     confirmStudent.textContent = `${request.name} · RA ${request.ra}`;
     confirmItem.textContent = `${request.item} · ${request.code}`;
     confirmConsequence.textContent = approved
-        ? "Status muda para Aprovada e Empréstimos ativos aumenta em 1."
+        ? "Status muda para Aprovada e o empréstimo terá limite de 6 horas."
         : "Status muda para Recusada e a solicitação sai das pendentes.";
     confirmDecision.className = `decision ${approved ? "approve" : "reject"}`;
     confirmDecision.textContent = approved ? "Confirmar aprovação" : "Confirmar recusa";

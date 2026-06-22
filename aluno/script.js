@@ -180,7 +180,7 @@ function addPendingLoan(equipment) {
             <div class="loan-icon"><i data-lucide="hourglass" class="h-5 w-5" aria-hidden="true"></i></div>
             <div class="min-w-0">
                 <p class="loan-title m-0">${equipment.name}</p>
-                <p class="loan-date mb-0">${equipment.code} · aguardando aprovação</p>
+                <p class="loan-date mb-0">${equipment.code} · limite de 6 horas após retirada</p>
             </div>
         </div>
         <span class="status-badge pending">Pendente</span>
@@ -233,7 +233,7 @@ notificationButton.addEventListener("click", () => {
 });
 
 helpButton.addEventListener("click", () => {
-    showToast("Para reservar: escolha o item, confira os dados, confirme e acompanhe em Meus empréstimos.");
+    showToast("Para reservar: escolha o item, confira os dados e devolva em até 6 horas após a retirada.");
 });
 
 function navigateTo(targetId) {
