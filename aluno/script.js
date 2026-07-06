@@ -2,6 +2,7 @@ if (window.lucide) lucide.createIcons();
 
 const app = document.getElementById("app");
 const logo = document.getElementById("brandLogo");
+const logoPlate = document.getElementById("brandLogoPlate");
 const logoFallback = document.getElementById("brandFallback");
 const drawer = document.getElementById("sideMenu");
 const backdrop = document.getElementById("menuBackdrop");
@@ -36,7 +37,7 @@ let toastTimer;
 let lastCreatedLoan = null;
 
 function showLogoFallback() {
-    logo.hidden = true;
+    logoPlate.hidden = true;
     logoFallback.style.display = "inline-flex";
 }
 
@@ -263,4 +264,19 @@ drawerLinks.forEach((item) => {
         setDrawer(false);
         navigateTo(item.dataset.drawerTarget);
     });
+});
+
+document.querySelectorAll(".drawer-link:not([data-drawer-target])").forEach((item) => {
+    item.addEventListener("click", () => {
+        setDrawer(false);
+        showToast("Em breve: acesso ao Portal do Aluno.");
+    });
+});
+
+document.getElementById("perfil").addEventListener("click", () => {
+    showToast("Perfil completo em breve — mostrando dados básicos do aluno.");
+});
+
+document.getElementById("loansViewAll").addEventListener("click", () => {
+    showToast("Exibindo os empréstimos mais recentes neste protótipo.");
 });

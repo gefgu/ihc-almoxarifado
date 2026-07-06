@@ -59,6 +59,18 @@ a:focus-visible {
     background: rgba(27, 27, 27, 0.88);
 }
 
+.brand-logo-plate {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    padding: 0.45rem 0.7rem;
+    border-radius: 10px;
+    background: var(--text);
+}
+
+.brand-logo { width: 128px; height: 48px; object-fit: contain; }
+
 .brand {
     font-size: 1.75rem;
     font-weight: 950;

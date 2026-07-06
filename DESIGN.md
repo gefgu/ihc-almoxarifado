@@ -80,7 +80,7 @@ Use uma escala baseada em 4 px:
 
 ### Marca UTFPR
 
-- O arquivo oficial deve ser colocado em `assets/logo-utfpr.svg`.
+- O arquivo oficial está em `aluno/assets/logo-utfpr.png`, exibido sobre uma placa clara (a marca oficial usa traço escuro, ilegível direto sobre o fundo carvão).
 - A imagem deve preservar proporção, possuir texto alternativo e usar `object-fit: contain`.
 - Enquanto o asset não existir ou falhar, exibir o fallback tipográfico `UTFPR`.
 - O fallback é apenas temporário e não deve ser exportado como substituto oficial da marca.

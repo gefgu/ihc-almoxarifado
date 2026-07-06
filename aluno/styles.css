@@ -100,9 +100,18 @@ a:focus-visible {
 .icon-button:hover { background: rgba(255, 255, 255, 0.12); }
 .icon-button:active { transform: scale(0.96); }
 
+.brand-logo-plate {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem 0.65rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-text);
+}
+
 .brand-logo {
-    width: 116px;
-    height: 44px;
+    width: 108px;
+    height: 38px;
     object-fit: contain;
 }
 
@@ -135,7 +144,11 @@ a:focus-visible {
     background: linear-gradient(135deg, #F5C400, var(--color-yellow));
     color: #171717;
     box-shadow: var(--shadow-yellow);
+    cursor: pointer;
+    transition: transform 140ms ease;
 }
+
+.student-card:active { transform: scale(0.98); }
 
 .student-avatar {
     width: 48px;
@@ -209,6 +222,7 @@ a:focus-visible {
 }
 
 .filter-chip:hover { border-color: rgba(255, 200, 0, 0.55); color: var(--color-text); }
+.filter-chip:active { transform: scale(0.95); }
 .filter-chip[aria-pressed="true"] {
     border-color: var(--color-yellow);
     background: var(--color-yellow);
@@ -246,7 +260,10 @@ a:focus-visible {
     color: var(--color-yellow);
     font-size: 0.75rem;
     font-weight: 800;
+    transition: opacity 140ms ease;
 }
+
+.section-link:active { opacity: 0.6; }
 
 .quick-help,
 .status-message {
@@ -475,6 +492,7 @@ a:focus-visible {
 }
 
 .new-loan:hover { background: rgba(255, 200, 0, 0.11); border-color: var(--color-yellow); }
+.new-loan:active { transform: scale(0.98); }
 
 .new-loan-icon {
     width: 44px;
@@ -530,6 +548,7 @@ a:focus-visible {
 }
 
 .nav-item:hover { color: var(--color-text); }
+.nav-item:active { transform: scale(0.92); }
 .nav-item[aria-current="page"] { color: var(--color-yellow); }
 
 .drawer-backdrop {
@@ -591,9 +610,11 @@ a:focus-visible {
     font-size: 0.88rem;
     font-weight: 700;
     text-align: left;
+    transition: background 140ms ease;
 }
 
 .drawer-link:hover { background: rgba(255, 255, 255, 0.06); }
+.drawer-link:active { background: rgba(255, 255, 255, 0.12); }
 .drawer-link.is-active { background: rgba(255, 200, 0, 0.12); color: var(--color-yellow); }
 
 .reservation-panel {
@@ -678,7 +699,10 @@ a:focus-visible {
     color: var(--color-text);
     font-size: 0.7rem;
     font-weight: 900;
+    transition: transform 140ms ease;
 }
+
+.secondary-button:active { transform: scale(0.96); }
 
 .toast {
     position: absolute;

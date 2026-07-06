@@ -16,6 +16,9 @@
                     <i data-lucide="menu" aria-hidden="true"></i>
                 </button>
                 <a class="brand" href="../" aria-label="Voltar ao portal">
+                    <span class="brand-logo-plate" id="brandLogoPlate">
+                        <img class="brand-logo" id="brandLogo" src="assets/logo-utfpr.png" alt="Universidade Tecnológica Federal do Paraná">
+                    </span>
                     <span class="brand-mark"><i data-lucide="package-open" aria-hidden="true"></i></span>
                     <span><strong>Almoxarifado</strong><small>Painel do Técnico</small></span>
                 </a>
@@ -46,16 +49,10 @@
                 <button class="icon-button" id="closeSidebar" type="button" aria-label="Fechar menu"><i data-lucide="x" aria-hidden="true"></i></button>
             </div>
             <nav>
-                <button class="side-link active" type="button" data-section="Dashboard"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></button>
-                <button class="side-link" type="button" data-section="Solicitações"><i data-lucide="file-clock"></i><span>Solicitações</span><b id="sidebarPending">4</b></button>
-                <button class="side-link" type="button" data-section="Empréstimos ativos"><i data-lucide="package-check"></i><span>Empréstimos ativos</span><b>23</b></button>
-                <button class="side-link" type="button" data-section="Devolvidos"><i data-lucide="package-open"></i><span>Devolvidos</span></button>
-                <button class="side-link" type="button" data-section="Atrasos"><i data-lucide="clock-alert"></i><span>Atrasos</span><b class="danger">5</b></button>
-                <button class="side-link" type="button" data-section="Manutenção"><i data-lucide="wrench"></i><span>Manutenção</span><b class="warning">4</b></button>
-                <button class="side-link" type="button" data-section="Produtos"><i data-lucide="boxes"></i><span>Produtos</span></button>
-                <button class="side-link" type="button" data-section="Relatórios"><i data-lucide="chart-no-axes-combined"></i><span>Relatórios</span></button>
-                <button class="side-link" type="button" data-section="Usuários"><i data-lucide="users"></i><span>Usuários</span></button>
-                <button class="side-link" type="button" data-section="Configurações"><i data-lucide="settings"></i><span>Configurações</span></button>
+                <button class="side-link active" type="button" data-section="Dashboard" data-filter="dashboard"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></button>
+                <button class="side-link" type="button" data-section="Solicitações" data-filter="solicitacoes"><i data-lucide="file-clock"></i><span>Solicitações</span><b id="sidebarPending">4</b></button>
+                <button class="side-link" type="button" data-section="Atrasos" data-filter="atrasos"><i data-lucide="clock-alert"></i><span>Atrasos</span><b class="danger">5</b></button>
+                <button class="side-link" type="button" data-section="Manutenção" data-filter="manutencao"><i data-lucide="wrench"></i><span>Manutenção</span><b class="warning">4</b></button>
             </nav>
             <button class="collapse-button" id="collapseSidebar" type="button"><i data-lucide="panel-left-close"></i><span>Recolher menu</span></button>
         </aside>
@@ -68,7 +65,7 @@
                     <h1 id="pageTitle">Dashboard</h1>
                 </div>
                 <div class="heading-actions">
-                    <p>Visão geral do almoxarifado · <strong>16 de maio de 2025 · 10:30</strong></p>
+                    <p id="pageSubtitle">Visão geral do almoxarifado · <strong>16 de maio de 2025 · 10:30</strong></p>
                     <button class="text-button" id="helpButton" type="button">Ajuda</button>
                 </div>
             </div>
@@ -108,10 +105,10 @@
 
             <div class="dashboard-grid">
                 <div class="primary-column">
-                    <section class="panel requests-panel">
+                    <section class="panel requests-panel" data-block="solicitacoes">
                         <header class="panel-header">
                             <div><h2>Solicitações pendentes <span id="pendingBadge">4</span></h2><p>Selecione uma solicitação para analisar</p></div>
-                            <button class="text-button" type="button">Ver todas</button>
+                            <button class="text-button" type="button" data-filter-link="solicitacoes">Ver todas</button>
                         </header>
                         <div class="table-wrap">
                             <table>
@@ -135,7 +132,7 @@
                         <div class="table-empty" id="requestEmpty" hidden>Nenhuma solicitação encontrada.</div>
                     </section>
 
-                    <section class="panel detail-panel" id="requestDetails" aria-live="polite">
+                    <section class="panel detail-panel" id="requestDetails" data-block="solicitacoes" aria-live="polite">
                         <header class="panel-header"><div><h2>Detalhes da solicitação selecionada</h2><p id="detailStatus">Aguardando análise</p></div></header>
                         <div class="detail-grid">
                             <div class="student-summary">
@@ -162,8 +159,8 @@
                 </div>
 
                 <div class="secondary-column">
-                    <section class="panel compact-panel">
-                        <header class="panel-header"><div><h2>Itens em atraso <span class="alert-count">5</span></h2></div><button class="text-button" type="button">Ver todos</button></header>
+                    <section class="panel compact-panel" data-block="atrasos">
+                        <header class="panel-header"><div><h2>Itens em atraso <span class="alert-count">5</span></h2></div><button class="text-button" type="button" data-filter-link="atrasos">Ver todos</button></header>
                         <div class="table-wrap">
                             <table class="compact-table">
                                 <thead><tr><th>Aluno</th><th>Item</th><th>Atraso</th><th>Urgência</th></tr></thead>
@@ -178,8 +175,8 @@
                         </div>
                     </section>
 
-                    <section class="panel compact-panel">
-                        <header class="panel-header"><div><h2>Manutenção / Defeitos <span>4</span></h2></div><button class="text-button" type="button">Ver todos</button></header>
+                    <section class="panel compact-panel" data-block="manutencao">
+                        <header class="panel-header"><div><h2>Manutenção / Defeitos <span>4</span></h2></div><button class="text-button" type="button" data-filter-link="manutencao">Ver todos</button></header>
                         <div class="table-wrap">
                             <table class="compact-table">
                                 <thead><tr><th>Item</th><th>Problema</th><th>Retorno</th><th>Status</th></tr></thead>
@@ -194,7 +191,7 @@
                     </section>
 
                     <section class="panel activity-panel">
-                        <header class="panel-header"><div><h2>Atividades recentes</h2></div><button class="text-button" type="button">Ver todas</button></header>
+                        <header class="panel-header"><div><h2>Atividades recentes</h2></div><button class="text-button" id="activityViewAll" type="button">Ver todas</button></header>
                         <ul id="activityList">
                             <li><span class="activity-icon success"><i data-lucide="check"></i></span><p>Empréstimo aprovado para Maria Souza · Multímetro Digital</p><time>10:15</time></li>
                             <li><span class="activity-icon info"><i data-lucide="arrow-right"></i></span><p>Devolução registrada · Gerador de Função</p><time>09:48</time></li>

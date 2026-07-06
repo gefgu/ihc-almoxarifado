@@ -1,5 +1,10 @@
 if (window.lucide) lucide.createIcons();
 
+const brandLogo = document.getElementById("brandLogo");
+const brandLogoPlate = document.getElementById("brandLogoPlate");
+brandLogo.addEventListener("error", () => { brandLogoPlate.hidden = true; });
+if (brandLogo.complete && brandLogo.naturalWidth === 0) brandLogoPlate.hidden = true;
+
 const requests = {
     1: { name: "João Martins", ra: "20231234", course: "Engenharia Elétrica", email: "joao.martins@aluno.utfpr.br", item: "Osciloscópio Digital", code: "PAT-25012", available: "14 unidades", date: "09:24", due: "15:24", loans: 3, icon: "monitor-speaker", reason: "Necessário para realização de ensaios e captura de sinais no projeto de laboratório." },
     2: { name: "Maria Souza", ra: "20224567", course: "Engenharia Eletrônica", email: "maria.souza@aluno.utfpr.br", item: "Multímetro Digital", code: "PAT-18045", available: "8 unidades", date: "09:02", due: "15:02", loans: 5, icon: "gauge", reason: "Uso em medições do projeto integrador da disciplina de circuitos." },
@@ -36,6 +41,13 @@ const confirmItem = document.getElementById("confirmItem");
 const confirmConsequence = document.getElementById("confirmConsequence");
 const confirmDecision = document.getElementById("confirmDecision");
 const cancelDecision = document.getElementById("cancelDecision");
+const pageSubtitle = document.getElementById("pageSubtitle");
+const originalSubtitleHTML = pageSubtitle.innerHTML;
+const metricsSection = document.querySelector(".metrics");
+const activityPanel = document.querySelector(".activity-panel");
+const primaryColumn = document.querySelector(".primary-column");
+const secondaryColumn = document.querySelector(".secondary-column");
+const dashboardGrid = document.querySelector(".dashboard-grid");
 let selectedRequestId = 1;
 let toastTimer;
 let pendingDecision = null;
@@ -62,12 +74,45 @@ document.addEventListener("keydown", (event) => {
     }
 });
 
-sideLinks.forEach((link) => {
-    link.addEventListener("click", () => {
-        sideLinks.forEach((item) => item.classList.toggle("active", item === link));
-        document.getElementById("pageTitle").textContent = link.dataset.section;
-        setSidebar(false);
+function applyBlockFilter(filterKey) {
+    const link = sideLinks.find((item) => item.dataset.filter === filterKey) || sideLinks[0];
+    const isDashboard = link.dataset.filter === "dashboard";
+
+    sideLinks.forEach((item) => item.classList.toggle("active", item === link));
+    document.getElementById("pageTitle").textContent = link.dataset.section;
+    setSidebar(false);
+
+    metricsSection.hidden = !isDashboard;
+    activityPanel.hidden = !isDashboard;
+    document.querySelectorAll("[data-block]").forEach((el) => {
+        el.hidden = !isDashboard && el.dataset.block !== link.dataset.filter;
     });
+    [primaryColumn, secondaryColumn].forEach((column) => {
+        const hasVisibleBlock = isDashboard || [...column.children].some((child) => child.dataset.block === link.dataset.filter);
+        column.hidden = !hasVisibleBlock;
+    });
+    dashboardGrid.classList.toggle("filtered", !isDashboard);
+    pageSubtitle.innerHTML = isDashboard ? originalSubtitleHTML : `Mostrando apenas: <strong>${link.dataset.section}</strong>`;
+}
+
+sideLinks.forEach((link) => {
+    link.addEventListener("click", () => applyBlockFilter(link.dataset.filter));
+});
+
+document.querySelectorAll("[data-filter-link]").forEach((button) => {
+    button.addEventListener("click", () => applyBlockFilter(button.dataset.filterLink));
+});
+
+document.getElementById("activityViewAll").addEventListener("click", () => {
+    showToast("Exibindo apenas as atividades mais recentes neste protótipo.");
+});
+
+document.querySelector(".notification-button").addEventListener("click", () => {
+    showToast("Você tem 3 notificações sobre solicitações e atrasos.");
+});
+
+document.querySelector(".profile-button").addEventListener("click", () => {
+    showToast("Menu do técnico ainda não disponível neste protótipo.");
 });
 
 function refreshIcons() {
